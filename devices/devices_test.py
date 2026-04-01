@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from api.devices import DEVICES
-from auth.auth import *
+from auth.auth import Auth
 
 # from auth.auth import Auth
 from auth.auth_test import user1
@@ -25,3 +25,11 @@ class TestDevices:
         assert resp.status_code == 200
         devices = resp.json().get("devices", [])
         assert isinstance(devices, list)
+
+    def test_get_stats(self):
+        resp = requests.get(
+            f"{DEVICES}/my/stats", headers={"Authorization": f"Bearer {token}"}
+        )
+        print(resp.text)
+        assert resp.status_code == 200
+        # stats = resp.json().get("stats", {})
