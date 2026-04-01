@@ -1,4 +1,4 @@
 # Device APIs
-from api.apis import SERVER
+from api.apis import API
 
-DEVICES = "/devices/"
+DEVICES = API + "/devices/"
