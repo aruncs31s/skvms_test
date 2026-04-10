@@ -2,6 +2,8 @@ import requests
 
 from api.apis import LOGIN, REFRESH, REGISTER
 
+from pytest import mark
+
 
 class Auth:
     def register(

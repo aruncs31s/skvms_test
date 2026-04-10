@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-
 import pytest
 from pytest import mark
-
 from auth.auth import Auth
 
+# Mark all tests in this module with 'auth'
+pytestmark = mark.auth
 
-@mark.auth
 @dataclass
 class _User:
     username: str

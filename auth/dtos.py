@@ -10,6 +10,7 @@ class UserDTO:
     name: str
     role: str
 
+
 @dataclass
 class AuthResponse:
     token: str

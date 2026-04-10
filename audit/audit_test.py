@@ -4,6 +4,8 @@ import requests
 from api import apis
 from auth.auth import Auth
 
+pytestmark = pytest.mark.audit
+
 URL = apis.AUDIT
 
 

@@ -5,7 +5,7 @@ import requests
 from api import apis
 from auth.auth import Auth
 
-device_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJkZXZpY2VfaWQiOjEwMSwic3ViIjoiZGV2aWNlOjEwMTp1c2VyOjMiLCJleHAiOjE3ODM3MDc2ODMsIm5iZiI6MTc3NTA2NzY4MywiaWF0IjoxNzc1MDY3NjgzfQ.qrWDi2eevZqCc427IH1KUIrxQ0uBlRDEE8AzlBbamF4"
+device_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJkZXZpY2VfaWQiOjIsInN1YiI6ImRldmljZToyOnVzZXI6MSIsImV4cCI6MTc4NDEzNzI0NCwibmJmIjoxNzc1NDk3MjQ0LCJpYXQiOjE3NzU0OTcyNDR9.GDoD4TbDjuiU2Clms-t2qhU4G2bvlMKRb5l_y4MzDUk"
 
 URL = "http://localhost:8080/api/readings"
 
