@@ -2,7 +2,6 @@ import requests
 
 from api.apis import LOGIN, REFRESH, REGISTER
 from utils.logger import get_logger
-from pytest import mark
 
 
 class Auth:
@@ -22,7 +21,10 @@ class Auth:
         if response.status_code == 201 or response.status_code == 200:
             return "Registration successful"
         elif response.status_code == 400:
-            return "Username or email already exists"
+            # Treat duplicate registration as idempotent for test runs.
+            if self.login(username, password) is not None:
+                return "Username already exists"
+            return "Registration failed"
         else:
             return "Registration failed"
 
@@ -33,8 +35,15 @@ class Auth:
         if response.status_code == 200:
             self.logger.info(f"login successful")
             return response.json()
+        elif response.status_code == 401:
+            self.logger.info(f"login failed: Invalid credentials")
+            try:
+                self.logger.info(f"response: {response.json()}")
+            except requests.exceptions.JSONDecodeError:
+                self.logger.info(f"response (non-json): {response.text}")
+            return None
         else:
-            self.logger.info(f"login failed")
+            self.logger.info(f"login failed: {response.status_code}")
             return None
 
     def get_token(self, username, password) -> str:
@@ -47,9 +56,15 @@ class Auth:
             self.logger.info(f"token received successfully")
             return response.json().get("token")
         else:
-            self.register(username, password)
-            self.logger.info(f"retrying to get token")
-            return self.get_token(username, password)
+            registration_result = self.register(username, password)
+            if registration_result in ("Registration successful", "Username already exists"):
+                self.logger.info(f"retrying to get token")
+                retry_response: requests.Response = requests.post(LOGIN, json=payload)
+                if retry_response.status_code == 200:
+                    self.logger.info(f"token received successfully")
+                    return retry_response.json().get("token")
+            self.logger.info("token not received")
+            return None
 
     def get_refresh_token(self, username, password):
         payload = {"username": username, "password": password}

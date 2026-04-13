@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import pytest
 from pytest import mark
 from auth.auth import Auth
-
+from utils.logger import get_logger
 # Mark all tests in this module with 'auth'
 pytestmark = mark.auth
 
@@ -38,7 +38,10 @@ def test_get_token(auth, registered_user):
 
 
 def test_refresh_token(auth: Auth, registered_user):
+    l = get_logger()
+    l.info(f"Testing token refresh username: {registered_user.username}, password: {registered_user.password}")
     tokens = auth.login(registered_user.username, registered_user.password)
+    l.info(f"Tokens received: {tokens}")
     refresh = tokens["refresh_token"]
     new_token = auth.refresh_token(refresh)
     assert new_token is not None
